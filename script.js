@@ -5,7 +5,7 @@ const DEFAULT_PRODUCTS = [
         price: 39,
         category: "Scrunchies",
         image: "5ba571e9-3305-49bd-8072-fed354f5c207.jpg",
-        emoji: "☁️",
+        emoji: "â˜ï¸",
         badge: "BESTSELLER",
         description: "Fluffy, soft, and cute for everyday ayos.",
         colors: ["Blush Pink", "Cream", "Brown"]
@@ -16,7 +16,7 @@ const DEFAULT_PRODUCTS = [
         price: 49,
         category: "Scrunchies",
         image: "d14b807f-3e56-40ce-9563-b23bf0405a3e.jpg",
-        emoji: "🎀",
+        emoji: "ðŸŽ€",
         badge: "NEW",
         description: "A satin bow detail for an extra sweet look.",
         colors: ["Rose", "Ivory", "Black"]
@@ -27,7 +27,7 @@ const DEFAULT_PRODUCTS = [
         price: 59,
         category: "Claw Clips",
         image: "a264a5d9-f4cc-4a38-9de7-c65bb4912880.jpg",
-        emoji: "🦋",
+        emoji: "ðŸ¦‹",
         badge: "TRENDING",
         description: "A sturdy claw clip with a polished finish.",
         colors: ["Tortoise", "Pink", "Cream"]
@@ -38,7 +38,7 @@ const DEFAULT_PRODUCTS = [
         price: 45,
         category: "Accessories",
         image: "9b1b16b3-ad1b-4f5d-8f07-960dfb1d5a07.jpg",
-        emoji: "🤍",
+        emoji: "ðŸ¤",
         badge: "SET OF 4",
         description: "Tiny pearl clips for a delicate finishing touch.",
         colors: ["Pearl White", "Blush"]
@@ -49,7 +49,7 @@ const DEFAULT_PRODUCTS = [
         price: 69,
         category: "Headbands",
         image: "8910e610-63fc-447b-ab39-5b8dc31c2480.jpg",
-        emoji: "👑",
+        emoji: "ðŸ‘‘",
         badge: "TRENDING",
         description: "A comfortable padded headband in soft satin.",
         colors: ["Dusty Pink", "Beige", "Black"]
@@ -60,7 +60,7 @@ const DEFAULT_PRODUCTS = [
         price: 35,
         category: "Accessories",
         image: "6f1d5085-ee67-40a8-b3a4-c72802fdd5b0.jpg",
-        emoji: "🎀",
+        emoji: "ðŸŽ€",
         badge: "TRENDING",
         description: "A playful ribbon bow for a cute hairstyle.",
         colors: ["Pink", "White", "Red"]
@@ -71,7 +71,7 @@ const DEFAULT_PRODUCTS = [
         price: 199,
         category: "Accessories",
         image: "48a8a73f-5378-4f2d-b467-67a22b70c7db.jpg",
-        emoji: "🎁",
+        emoji: "ðŸŽ",
         badge: "GIFT IDEA",
         description: "A surprise box filled with seven hair accessories.",
         colors: ["Surprise Mix"]
@@ -82,7 +82,7 @@ const DEFAULT_PRODUCTS = [
         price: 29,
         category: "Claw Clips",
         image: "8421f39b-81c0-43fa-962f-33567c6236fb.jpg",
-        emoji: "🦋",
+        emoji: "ðŸ¦‹",
         badge: "",
         description: "Tiny clips that add fun to any hairstyle.",
         colors: ["Pink", "Lilac", "Cream"]
@@ -91,6 +91,8 @@ const DEFAULT_PRODUCTS = [
 
 const PRODUCTS_KEY = "lirayTaliProductsV1";
 const CART_KEY = "lirayTaliCartV1";
+const MIN_SHIPPING_FEE = 500;
+const ORDER_EMAIL = "sharmainecantal@gmail.com";
 
 let products = loadProducts();
 let cart = loadCart();
@@ -102,7 +104,7 @@ let checkoutItems = [];
 let heroGalleryTimer = null;
 
 const peso = amount =>
-    "₱" + Number(amount).toLocaleString("en-PH", {
+    "â‚±" + Number(amount).toLocaleString("en-PH", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
@@ -186,14 +188,14 @@ function imageMarkup(product, extraClass = "") {
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
             >
             <div class="placeholder-art" style="display:none">
-                ${escapeHTML(product.emoji || "🎀")}
+                ${escapeHTML(product.emoji || "ðŸŽ€")}
             </div>
         `;
     }
 
     return `
         <div class="placeholder-art">
-            ${escapeHTML(product.emoji || "🎀")}
+            ${escapeHTML(product.emoji || "ðŸŽ€")}
         </div>
     `;
 }
@@ -216,10 +218,16 @@ function renderHeroGallery() {
 
     if (galleryProducts.length === 0) return;
 
-    for (let index = galleryProducts.length - 1; index > 0; index -= 1) {
-        const randomIndex = Math.floor(Math.random() * (index + 1));
-        [galleryProducts[index], galleryProducts[randomIndex]] =
-            [galleryProducts[randomIndex], galleryProducts[index]];
+    const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+    if (isMobile) {
+        galleryProducts.splice(1);
+    } else {
+        for (let index = galleryProducts.length - 1; index > 0; index -= 1) {
+            const randomIndex = Math.floor(Math.random() * (index + 1));
+            [galleryProducts[index], galleryProducts[randomIndex]] =
+                [galleryProducts[randomIndex], galleryProducts[index]];
+        }
     }
 
     gallery.innerHTML = galleryProducts.map((product, index) => {
@@ -239,12 +247,13 @@ function renderHeroGallery() {
         return `
             <div class="hero-color-slide hero-color-slide--placeholder${activeClass}"
                 role="img" aria-label="${escapeHTML(product.name)}">
-                ${escapeHTML(product.emoji || "🎀")}
+                ${escapeHTML(product.emoji || "ðŸŽ€")}
             </div>
         `;
     }).join("");
 
     if (
+        isMobile ||
         galleryProducts.length < 2 ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
@@ -528,7 +537,7 @@ function openProduct(id) {
                     id="addFromDetails"
                     type="button"
                 >
-                    ADD TO BAG — ${peso(product.price)}
+                    ADD TO BAG â€” ${peso(product.price)}
                 </button>
 
             </div>
@@ -640,14 +649,17 @@ function updateCart() {
         return sum + product.price * item.quantity;
     }, 0);
 
-    document.getElementById("cartTotal").textContent = peso(totalPrice);
+    document.getElementById("cartSubtotal").textContent = peso(totalPrice);
+    document.getElementById("cartShipping").textContent = `${peso(MIN_SHIPPING_FEE)}+`;
+    document.getElementById("cartTotal").textContent =
+        `${peso(totalPrice + MIN_SHIPPING_FEE)}+`;
 
     const cartItems = document.getElementById("cartItems");
 
     if (cart.length === 0) {
         cartItems.innerHTML = `
             <div class="empty-cart">
-                <h3>Your bag is empty ♡</h3>
+                <h3>Your bag is empty â™¡</h3>
                 <p>Find something cute for your everyday ayos!</p>
             </div>
         `;
@@ -669,7 +681,7 @@ function updateCart() {
                     <h3>${escapeHTML(product.name)}</h3>
 
                     <p>
-                        ${escapeHTML(item.color)} · <span class="cart-item-price">${peso(product.price)}</span>
+                        ${escapeHTML(item.color)} Â· <span class="cart-item-price">${peso(product.price)}</span>
                     </p>
 
                     <div class="quantity-controls">
@@ -681,7 +693,7 @@ function updateCart() {
                             data-change="-1"
                             aria-label="Decrease quantity"
                         >
-                            −
+                            âˆ’
                         </button>
 
                         <span>${item.quantity}</span>
@@ -738,7 +750,7 @@ function renderCheckoutReview() {
                 <div class="cart-thumb">${imageMarkup(product)}</div>
                 <div>
                     <h4>${escapeHTML(product.name)}</h4>
-                    <p>${escapeHTML(item.color)} · Qty ${Number(item.quantity)}</p>
+                    <p>${escapeHTML(item.color)} Â· Qty ${Number(item.quantity)}</p>
                 </div>
                 <strong>${peso(product.price * Number(item.quantity))}</strong>
             </div>
@@ -750,7 +762,10 @@ function renderCheckoutReview() {
         return sum + product.price * Number(item.quantity);
     }, 0);
 
-    document.getElementById("checkoutTotal").textContent = peso(total);
+    document.getElementById("checkoutSubtotal").textContent = peso(total);
+    document.getElementById("checkoutShipping").textContent = `${peso(MIN_SHIPPING_FEE)}+`;
+    document.getElementById("checkoutTotal").textContent =
+        `${peso(total + MIN_SHIPPING_FEE)}+`;
 }
 
 function showCheckoutStep(step) {
@@ -767,9 +782,9 @@ function showCheckoutStep(step) {
     });
 
     const titles = {
-        review: "Checkout · Review",
-        customer: "Checkout · Customer info",
-        payment: "Checkout · Payment",
+        review: "Checkout Â· Review",
+        customer: "Checkout Â· Customer info",
+        payment: "Checkout Â· Payment",
         confirmation: "Order request"
     };
 
@@ -1004,7 +1019,7 @@ function renderAdminProducts() {
 
             <div>
                 <strong>${escapeHTML(product.name)}</strong>
-                <small>${peso(product.price)} · ${escapeHTML(product.category)}</small>
+                <small>${peso(product.price)} Â· ${escapeHTML(product.category)}</small>
             </div>
 
             <button
@@ -1131,7 +1146,7 @@ document.getElementById("productForm").addEventListener("submit", event => {
             description,
             image,
             colors,
-            emoji: "🎀",
+            emoji: "ðŸŽ€",
             badge: "NEW"
         });
     }
@@ -1209,11 +1224,12 @@ document.getElementById("emailOrderRequest").addEventListener("click", () => {
         "I'd like to request the following order:",
         ...checkoutItems.map(item => {
             const product = getProduct(item.id);
-            return `- ${product.name} (${item.color}) x ${Number(item.quantity)} — ${peso(product.price * Number(item.quantity))}`;
+            return `- ${product.name} (${item.color}) x ${Number(item.quantity)} â€” ${peso(product.price * Number(item.quantity))}`;
         }),
         "",
         `Items subtotal: ${peso(orderTotal)}`,
-        "Shipping: Please confirm the fee and availability.",
+        `Shipping estimate (minimum): ${peso(MIN_SHIPPING_FEE)}+`,
+        `Estimated order total (minimum): ${peso(orderTotal + MIN_SHIPPING_FEE)}+`,
         `Preferred payment method: ${paymentMethod.value}`,
         "",
         "Customer details:",
@@ -1223,14 +1239,14 @@ document.getElementById("emailOrderRequest").addEventListener("click", () => {
         `Address: ${form.elements.customerAddress.value.trim()}, ${form.elements.customerCity.value.trim()}, ${form.elements.customerProvince.value.trim()} ${form.elements.customerPostalCode.value.trim()}`,
         `Delivery instructions: ${form.elements.deliveryNotes.value.trim() || "None"}`,
         "",
-        "Please confirm availability, delivery fee, and payment instructions."
+        "Please confirm availability, the final shipping fee based on the delivery address, and payment instructions."
     ];
-    const mailto = `mailto:liraytali@gmail.com?subject=${encodeURIComponent("Liray Tali order request")}&body=${encodeURIComponent(emailLines.join("\n"))}`;
+    const mailto = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent("Liray Tali order request")}&body=${encodeURIComponent(emailLines.join("\n"))}`;
 
     document.getElementById("confirmationName").textContent = customerName;
     document.getElementById("confirmationSummary").textContent =
-        `${checkoutItems.reduce((sum, item) => sum + Number(item.quantity), 0)} item(s) · ` +
-        `${peso(orderTotal)} items subtotal · ${paymentMethod.value}`;
+        `${checkoutItems.reduce((sum, item) => sum + Number(item.quantity), 0)} item(s) Â· ` +
+        `${peso(orderTotal + MIN_SHIPPING_FEE)}+ estimated minimum total Â· ${paymentMethod.value}`;
     showCheckoutStep("confirmation");
     window.location.href = mailto;
 });
