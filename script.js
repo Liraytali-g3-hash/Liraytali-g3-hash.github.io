@@ -5,7 +5,7 @@ const DEFAULT_PRODUCTS = [
         price: 39,
         category: "Scrunchies",
         image: "5ba571e9-3305-49bd-8072-fed354f5c207.jpg",
-        emoji: "â˜ï¸",
+        emoji: "\u2601\uFE0F",
         badge: "BESTSELLER",
         description: "Fluffy, soft, and cute for everyday ayos.",
         colors: ["Blush Pink", "Cream", "Brown"]
@@ -16,7 +16,7 @@ const DEFAULT_PRODUCTS = [
         price: 49,
         category: "Scrunchies",
         image: "d14b807f-3e56-40ce-9563-b23bf0405a3e.jpg",
-        emoji: "ðŸŽ€",
+        emoji: "\u{1F380}",
         badge: "NEW",
         description: "A satin bow detail for an extra sweet look.",
         colors: ["Rose", "Ivory", "Black"]
@@ -27,7 +27,7 @@ const DEFAULT_PRODUCTS = [
         price: 59,
         category: "Claw Clips",
         image: "a264a5d9-f4cc-4a38-9de7-c65bb4912880.jpg",
-        emoji: "ðŸ¦‹",
+        emoji: "\u{1F98B}",
         badge: "TRENDING",
         description: "A sturdy claw clip with a polished finish.",
         colors: ["Tortoise", "Pink", "Cream"]
@@ -38,7 +38,7 @@ const DEFAULT_PRODUCTS = [
         price: 45,
         category: "Accessories",
         image: "9b1b16b3-ad1b-4f5d-8f07-960dfb1d5a07.jpg",
-        emoji: "ðŸ¤",
+        emoji: "\u{1F90D}",
         badge: "SET OF 4",
         description: "Tiny pearl clips for a delicate finishing touch.",
         colors: ["Pearl White", "Blush"]
@@ -49,7 +49,7 @@ const DEFAULT_PRODUCTS = [
         price: 69,
         category: "Headbands",
         image: "8910e610-63fc-447b-ab39-5b8dc31c2480.jpg",
-        emoji: "ðŸ‘‘",
+        emoji: "\u{1F451}",
         badge: "TRENDING",
         description: "A comfortable padded headband in soft satin.",
         colors: ["Dusty Pink", "Beige", "Black"]
@@ -60,7 +60,7 @@ const DEFAULT_PRODUCTS = [
         price: 35,
         category: "Accessories",
         image: "6f1d5085-ee67-40a8-b3a4-c72802fdd5b0.jpg",
-        emoji: "ðŸŽ€",
+        emoji: "\u{1F380}",
         badge: "TRENDING",
         description: "A playful ribbon bow for a cute hairstyle.",
         colors: ["Pink", "White", "Red"]
@@ -71,7 +71,7 @@ const DEFAULT_PRODUCTS = [
         price: 199,
         category: "Accessories",
         image: "48a8a73f-5378-4f2d-b467-67a22b70c7db.jpg",
-        emoji: "ðŸŽ",
+        emoji: "\u{1F381}",
         badge: "GIFT IDEA",
         description: "A surprise box filled with seven hair accessories.",
         colors: ["Surprise Mix"]
@@ -82,7 +82,7 @@ const DEFAULT_PRODUCTS = [
         price: 29,
         category: "Claw Clips",
         image: "8421f39b-81c0-43fa-962f-33567c6236fb.jpg",
-        emoji: "ðŸ¦‹",
+        emoji: "\u{1F98B}",
         badge: "",
         description: "Tiny clips that add fun to any hairstyle.",
         colors: ["Pink", "Lilac", "Cream"]
@@ -103,8 +103,8 @@ let currentProductId = null;
 let checkoutItems = [];
 let heroGalleryTimer = null;
 
-const peso = amount =>
-    "â‚±" + Number(amount).toLocaleString("en-PH", {
+const formatPrice = amount =>
+    Number(amount).toLocaleString("en-PH", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
@@ -188,14 +188,14 @@ function imageMarkup(product, extraClass = "") {
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
             >
             <div class="placeholder-art" style="display:none">
-                ${escapeHTML(product.emoji || "ðŸŽ€")}
+                ${escapeHTML(product.emoji || "\u{1F380}")}
             </div>
         `;
     }
 
     return `
         <div class="placeholder-art">
-            ${escapeHTML(product.emoji || "ðŸŽ€")}
+            ${escapeHTML(product.emoji || "\u{1F380}")}
         </div>
     `;
 }
@@ -247,7 +247,7 @@ function renderHeroGallery() {
         return `
             <div class="hero-color-slide hero-color-slide--placeholder${activeClass}"
                 role="img" aria-label="${escapeHTML(product.name)}">
-                ${escapeHTML(product.emoji || "ðŸŽ€")}
+                ${escapeHTML(product.emoji || "\u{1F380}")}
             </div>
         `;
     }).join("");
@@ -374,7 +374,7 @@ function renderProducts() {
                     <h3>${escapeHTML(product.name)}</h3>
 
                     <div class="product-price">
-                        ${peso(product.price)}
+                        ${formatPrice(product.price)}
                     </div>
 
                     <div class="product-description">
@@ -504,7 +504,7 @@ function openProduct(id) {
                 <h2>${escapeHTML(product.name)}</h2>
 
                 <div class="detail-price">
-                    ${peso(product.price)}
+                    ${formatPrice(product.price)}
                 </div>
 
                 <p>${escapeHTML(product.description)}</p>
@@ -537,7 +537,7 @@ function openProduct(id) {
                     id="addFromDetails"
                     type="button"
                 >
-                    ADD TO BAG â€” ${peso(product.price)}
+                    ADD TO BAG \u2014 ${formatPrice(product.price)}
                 </button>
 
             </div>
@@ -649,17 +649,17 @@ function updateCart() {
         return sum + product.price * item.quantity;
     }, 0);
 
-    document.getElementById("cartSubtotal").textContent = peso(totalPrice);
-    document.getElementById("cartShipping").textContent = `${peso(MIN_SHIPPING_FEE)}+`;
+    document.getElementById("cartSubtotal").textContent = formatPrice(totalPrice);
+    document.getElementById("cartShipping").textContent = formatPrice(MIN_SHIPPING_FEE);
     document.getElementById("cartTotal").textContent =
-        `${peso(totalPrice + MIN_SHIPPING_FEE)}+`;
+        formatPrice(totalPrice + MIN_SHIPPING_FEE);
 
     const cartItems = document.getElementById("cartItems");
 
     if (cart.length === 0) {
         cartItems.innerHTML = `
             <div class="empty-cart">
-                <h3>Your bag is empty â™¡</h3>
+                <h3>Your bag is empty \u2661</h3>
                 <p>Find something cute for your everyday ayos!</p>
             </div>
         `;
@@ -681,7 +681,8 @@ function updateCart() {
                     <h3>${escapeHTML(product.name)}</h3>
 
                     <p>
-                        ${escapeHTML(item.color)} Â· <span class="cart-item-price">${peso(product.price)}</span>
+                        ${escapeHTML(item.color)} \u00B7
+                        <span class="cart-item-price">${formatPrice(product.price)}</span>
                     </p>
 
                     <div class="quantity-controls">
@@ -693,7 +694,7 @@ function updateCart() {
                             data-change="-1"
                             aria-label="Decrease quantity"
                         >
-                            âˆ’
+                            \u2212
                         </button>
 
                         <span>${item.quantity}</span>
@@ -750,9 +751,9 @@ function renderCheckoutReview() {
                 <div class="cart-thumb">${imageMarkup(product)}</div>
                 <div>
                     <h4>${escapeHTML(product.name)}</h4>
-                    <p>${escapeHTML(item.color)} Â· Qty ${Number(item.quantity)}</p>
+                    <p>${escapeHTML(item.color)} \u00B7 Qty ${Number(item.quantity)}</p>
                 </div>
-                <strong>${peso(product.price * Number(item.quantity))}</strong>
+                <strong>${formatPrice(product.price * Number(item.quantity))}</strong>
             </div>
         `;
     }).join("");
@@ -762,10 +763,10 @@ function renderCheckoutReview() {
         return sum + product.price * Number(item.quantity);
     }, 0);
 
-    document.getElementById("checkoutSubtotal").textContent = peso(total);
-    document.getElementById("checkoutShipping").textContent = `${peso(MIN_SHIPPING_FEE)}+`;
+    document.getElementById("checkoutSubtotal").textContent = formatPrice(total);
+    document.getElementById("checkoutShipping").textContent = formatPrice(MIN_SHIPPING_FEE);
     document.getElementById("checkoutTotal").textContent =
-        `${peso(total + MIN_SHIPPING_FEE)}+`;
+        formatPrice(total + MIN_SHIPPING_FEE);
 }
 
 function showCheckoutStep(step) {
@@ -782,9 +783,9 @@ function showCheckoutStep(step) {
     });
 
     const titles = {
-        review: "Checkout Â· Review",
-        customer: "Checkout Â· Customer info",
-        payment: "Checkout Â· Payment",
+        review: "Checkout \u00B7 Review",
+        customer: "Checkout \u00B7 Customer info",
+        payment: "Checkout \u00B7 Payment",
         confirmation: "Order request"
     };
 
@@ -1019,7 +1020,7 @@ function renderAdminProducts() {
 
             <div>
                 <strong>${escapeHTML(product.name)}</strong>
-                <small>${peso(product.price)} Â· ${escapeHTML(product.category)}</small>
+                <small>${formatPrice(product.price)} \u00B7 ${escapeHTML(product.category)}</small>
             </div>
 
             <button
@@ -1146,7 +1147,7 @@ document.getElementById("productForm").addEventListener("submit", event => {
             description,
             image,
             colors,
-            emoji: "ðŸŽ€",
+            emoji: "\u{1F380}",
             badge: "NEW"
         });
     }
@@ -1224,12 +1225,12 @@ document.getElementById("emailOrderRequest").addEventListener("click", () => {
         "I'd like to request the following order:",
         ...checkoutItems.map(item => {
             const product = getProduct(item.id);
-            return `- ${product.name} (${item.color}) x ${Number(item.quantity)} â€” ${peso(product.price * Number(item.quantity))}`;
+            return `- ${product.name} (${item.color}) x ${Number(item.quantity)} \u2014 ${formatPrice(product.price * Number(item.quantity))}`;
         }),
         "",
-        `Items subtotal: ${peso(orderTotal)}`,
-        `Shipping estimate (minimum): ${peso(MIN_SHIPPING_FEE)}+`,
-        `Estimated order total (minimum): ${peso(orderTotal + MIN_SHIPPING_FEE)}+`,
+        `Items subtotal: ${formatPrice(orderTotal)}`,
+        `Shipping minimum: ${formatPrice(MIN_SHIPPING_FEE)}`,
+        `Estimated order total minimum: ${formatPrice(orderTotal + MIN_SHIPPING_FEE)}`,
         `Preferred payment method: ${paymentMethod.value}`,
         "",
         "Customer details:",
@@ -1245,8 +1246,8 @@ document.getElementById("emailOrderRequest").addEventListener("click", () => {
 
     document.getElementById("confirmationName").textContent = customerName;
     document.getElementById("confirmationSummary").textContent =
-        `${checkoutItems.reduce((sum, item) => sum + Number(item.quantity), 0)} item(s) Â· ` +
-        `${peso(orderTotal + MIN_SHIPPING_FEE)}+ estimated minimum total Â· ${paymentMethod.value}`;
+        `${checkoutItems.reduce((sum, item) => sum + Number(item.quantity), 0)} item(s) \u00B7 ` +
+        `${formatPrice(orderTotal + MIN_SHIPPING_FEE)} estimated minimum total \u00B7 ${paymentMethod.value}`;
     showCheckoutStep("confirmation");
     window.location.href = mailto;
 });
