@@ -234,9 +234,22 @@ textarea:focus-visible {
 }
 
 #searchToggle {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+}
+
+#searchToggle svg,
+.menu-toggle svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
 }
 
 #cartToggle {
@@ -250,9 +263,6 @@ textarea:focus-visible {
 
 .menu-toggle {
     display: none;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
 }
 
 /* BUTTONS */
@@ -1379,7 +1389,8 @@ dialog::backdrop {
     }
 
     #searchToggle {
-        font-size: 9px;
+        width: 40px;
+        height: 40px;
     }
 
     #cartToggle {
