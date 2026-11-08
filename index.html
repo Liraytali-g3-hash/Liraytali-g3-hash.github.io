@@ -33,7 +33,9 @@
 
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu"
             aria-controls="navigation" aria-expanded="false">
-            MENU
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 6h18M3 12h18M3 18h18"></path>
+            </svg>
         </button>
 
         <a href="#home" class="logo">
@@ -51,7 +53,12 @@
         </nav>
 
         <div class="header-actions">
-            <button id="searchToggle" type="button" aria-label="Search products">SEARCH</button>
+            <button id="searchToggle" type="button" aria-label="Search products">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+            </button>
 
             <button id="cartToggle" type="button" aria-label="Shopping bag">
                 <span class="cart-label">SHOPPING BAG</span><span class="cart-label-mobile">BAG</span> (<span id="cartCount">0</span>)
