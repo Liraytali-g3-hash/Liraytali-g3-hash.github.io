@@ -99,6 +99,7 @@ let activeCategory = "All";
 let selectedColors = {};
 let currentProductId = null;
 let checkoutItems = [];
+let heroGalleryTimer = null;
 
 const peso = amount =>
     "₱" + Number(amount).toLocaleString("en-PH", {
@@ -195,6 +196,70 @@ function imageMarkup(product, extraClass = "") {
             ${escapeHTML(product.emoji || "🎀")}
         </div>
     `;
+}
+
+function renderHeroGallery() {
+    const gallery = document.getElementById("heroProductGallery");
+
+    if (!gallery) return;
+
+    if (heroGalleryTimer) {
+        clearInterval(heroGalleryTimer);
+        heroGalleryTimer = null;
+    }
+
+    const galleryProducts = products.filter(product =>
+        product &&
+        typeof product.name === "string" &&
+        product.name.trim()
+    );
+
+    if (galleryProducts.length === 0) return;
+
+    for (let index = galleryProducts.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [galleryProducts[index], galleryProducts[randomIndex]] =
+            [galleryProducts[randomIndex], galleryProducts[index]];
+    }
+
+    gallery.innerHTML = galleryProducts.map((product, index) => {
+        const activeClass = index === 0 ? " is-active" : "";
+
+        if (typeof product.image === "string" && product.image.trim()) {
+            return `
+                <img
+                    class="hero-color-slide${activeClass}"
+                    src="${escapeHTML(product.image.trim())}"
+                    alt="${escapeHTML(product.name)}"
+                    ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}
+                >
+            `;
+        }
+
+        return `
+            <div class="hero-color-slide hero-color-slide--placeholder${activeClass}"
+                role="img" aria-label="${escapeHTML(product.name)}">
+                ${escapeHTML(product.emoji || "🎀")}
+            </div>
+        `;
+    }).join("");
+
+    if (
+        galleryProducts.length < 2 ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+        return;
+    }
+
+    let activeIndex = 0;
+    heroGalleryTimer = setInterval(() => {
+        if (document.hidden) return;
+
+        const slides = gallery.querySelectorAll(".hero-color-slide");
+        slides[activeIndex].classList.remove("is-active");
+        activeIndex = (activeIndex + 1) % slides.length;
+        slides[activeIndex].classList.add("is-active");
+    }, 3500);
 }
 
 
@@ -1006,6 +1071,7 @@ document.getElementById("adminProductList").addEventListener("click", event => {
         if (saveProducts()) {
             saveCart();
             renderProducts();
+            renderHeroGallery();
             renderAdminProducts();
             updateCart();
             resetAdminForm();
@@ -1072,6 +1138,7 @@ document.getElementById("productForm").addEventListener("submit", event => {
 
     if (saveProducts()) {
         renderProducts();
+        renderHeroGallery();
         renderAdminProducts();
         updateCart();
         resetAdminForm();
@@ -1195,4 +1262,5 @@ document.getElementById("currentYear").textContent =
     new Date().getFullYear();
 
 renderProducts();
+renderHeroGallery();
 updateCart();
