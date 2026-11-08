@@ -93,6 +93,7 @@ const PRODUCTS_KEY = "lirayTaliProductsV1";
 const CART_KEY = "lirayTaliCartV1";
 const MIN_SHIPPING_FEE = 500;
 const ORDER_EMAIL = "sharmainecantal@gmail.com";
+const CHECKOUT_HASH = "#checkout";
 
 let products = loadProducts();
 let cart = loadCart();
@@ -218,16 +219,10 @@ function renderHeroGallery() {
 
     if (galleryProducts.length === 0) return;
 
-    const isMobile = window.matchMedia("(max-width: 760px)").matches;
-
-    if (isMobile) {
-        galleryProducts.splice(1);
-    } else {
-        for (let index = galleryProducts.length - 1; index > 0; index -= 1) {
-            const randomIndex = Math.floor(Math.random() * (index + 1));
-            [galleryProducts[index], galleryProducts[randomIndex]] =
-                [galleryProducts[randomIndex], galleryProducts[index]];
-        }
+    for (let index = galleryProducts.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [galleryProducts[index], galleryProducts[randomIndex]] =
+            [galleryProducts[randomIndex], galleryProducts[index]];
     }
 
     gallery.innerHTML = galleryProducts.map((product, index) => {
@@ -253,7 +248,6 @@ function renderHeroGallery() {
     }).join("");
 
     if (
-        isMobile ||
         galleryProducts.length < 2 ||
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
@@ -726,7 +720,17 @@ function updateCart() {
     }).join("");
 }
 
-function startCheckout(items) {
+function updateCheckoutUrl(open) {
+    const url = `${window.location.pathname}${window.location.search}`;
+
+    if (open && window.location.hash !== CHECKOUT_HASH) {
+        window.history.pushState({ checkout: true }, "", `${url}${CHECKOUT_HASH}`);
+    } else if (!open && window.location.hash === CHECKOUT_HASH) {
+        window.history.replaceState(null, "", url);
+    }
+}
+
+function startCheckout(items, syncUrl = true) {
     checkoutItems = items.map(item => ({ ...item }));
 
     if (checkoutItems.length === 0) {
@@ -736,7 +740,18 @@ function startCheckout(items) {
 
     renderCheckoutReview();
     showCheckoutStep("review");
+    if (syncUrl) updateCheckoutUrl(true);
     document.getElementById("checkoutDialog").showModal();
+}
+
+function restoreCheckoutFromUrl() {
+    if (window.location.hash !== CHECKOUT_HASH) return;
+
+    if (cart.length > 0) {
+        startCheckout(cart, false);
+    } else {
+        document.getElementById("cartDialog").showModal();
+    }
 }
 
 function renderCheckoutReview() {
@@ -1265,9 +1280,20 @@ document.getElementById("finishCheckout").addEventListener("click", () => {
 });
 
 document.getElementById("checkoutDialog").addEventListener("close", () => {
+    updateCheckoutUrl(false);
     document.getElementById("customerInfoForm").reset();
     updatePaymentNotice();
     checkoutItems = [];
+});
+
+window.addEventListener("popstate", () => {
+    const checkoutDialog = document.getElementById("checkoutDialog");
+
+    if (window.location.hash === CHECKOUT_HASH) {
+        restoreCheckoutFromUrl();
+    } else if (checkoutDialog.open) {
+        checkoutDialog.close();
+    }
 });
 
 
@@ -1281,3 +1307,4 @@ document.getElementById("currentYear").textContent =
 renderProducts();
 renderHeroGallery();
 updateCart();
+restoreCheckoutFromUrl();
