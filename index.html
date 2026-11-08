@@ -7,6 +7,11 @@
 
     <title>Liray Tali | Small Clip, Big Ayos</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap">
+    <link rel="preload" as="image" href="5ba571e9-3305-49bd-8072-fed354f5c207.jpg" fetchpriority="high">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,12 +20,12 @@
     <div class="opening-reveal" aria-hidden="true">
         <div class="opening-reveal__brand">LIRAY <span>TALI</span></div>
         <p class="opening-reveal__tagline">SMALL CLIP, BIG AYOS</p>
-        <span class="opening-reveal__sparkle">✦</span>
+        <span class="opening-reveal__sparkle">âœ¦</span>
     </div>
 
     <!-- Announcement Bar -->
     <div class="announcement">
-        SMALL CLIP, BIG AYOS ♡ FREE YOUR STYLE WITH LIRAY TALI
+        SMALL CLIP, BIG AYOS â™¡ FREE YOUR STYLE WITH LIRAY TALI
     </div>
 
     <!-- Navigation -->
@@ -28,7 +33,7 @@
 
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation"
             aria-controls="navigation" aria-expanded="false">
-            ☰
+            â˜°
         </button>
 
         <a href="#home" class="logo">
@@ -46,7 +51,7 @@
         </nav>
 
         <div class="header-actions">
-            <button id="searchToggle" aria-label="Search products">⌕</button>
+            <button id="searchToggle" aria-label="Search products">âŒ•</button>
 
             <button id="cartToggle">
                 Bag (<span id="cartCount">0</span>)
@@ -74,7 +79,7 @@
                 </p>
 
                 <a href="#shop" class="button button-dark">
-                    SHOP COLLECTION ↗
+                    SHOP COLLECTION â†—
                 </a>
             </div>
 
@@ -83,7 +88,7 @@
                     aria-label="Featured products">
                     <img class="hero-color-slide is-active"
                         src="5ba571e9-3305-49bd-8072-fed354f5c207.jpg"
-                        alt="Cloud Scrunchie">
+                        alt="Cloud Scrunchie" fetchpriority="high" decoding="async">
                 </figure>
             </div>
 
@@ -93,19 +98,19 @@
         <section class="category-strip">
 
             <a href="#shop" data-category="All">
-                SHOP ALL ↗
+                SHOP ALL â†—
             </a>
 
             <a href="#shop" data-category="Scrunchies">
-                SCRUNCHIES ↗
+                SCRUNCHIES â†—
             </a>
 
             <a href="#shop" data-category="Claw Clips">
-                CLAW CLIPS ↗
+                CLAW CLIPS â†—
             </a>
 
             <a href="#shop" data-category="Accessories">
-                ACCESSORIES ↗
+                ACCESSORIES â†—
             </a>
 
         </section>
@@ -187,7 +192,7 @@
             </p>
 
             <a href="#shop" class="button button-dark">
-                DISCOVER YOUR STYLE ↗
+                DISCOVER YOUR STYLE â†—
             </a>
 
         </section>
@@ -201,7 +206,7 @@
             LIRAY <span>TALI</span>
         </a>
 
-        <p>Small Clip, Big Ayos ♡</p>
+        <p>Small Clip, Big Ayos â™¡</p>
 
         <div class="footer-contact">
             <p>Need help?</p>
@@ -240,12 +245,23 @@
         <div id="cartItems"></div>
 
         <div class="cart-summary">
-            <span>Subtotal</span>
-            <strong id="cartTotal">₱0.00</strong>
+            <div class="cart-summary-row">
+                <span>Items subtotal</span>
+                <strong id="cartSubtotal">â‚±0.00</strong>
+            </div>
+            <div class="cart-summary-row">
+                <span>Shipping (from)</span>
+                <strong id="cartShipping">â‚±500.00+</strong>
+            </div>
+            <div class="cart-summary-row cart-summary-total">
+                <span>Estimated total (minimum)</span>
+                <strong id="cartTotal">â‚±0.00+</strong>
+            </div>
         </div>
 
         <p class="cart-note">
-            Delivery costs and item availability will be confirmed when we reply to your order request.
+            Shipping starts at â‚±500.00. The final fee depends on your delivery address and will be confirmed with
+            availability when we reply to your order request.
         </p>
 
         <button class="button button-dark full-width" id="checkoutButton">
@@ -257,7 +273,7 @@
     <!-- Checkout flow -->
     <dialog id="checkoutDialog" class="checkout-dialog">
         <div class="cart-header">
-            <h2 id="checkoutTitle">Checkout · Review</h2>
+            <h2 id="checkoutTitle">Checkout Â· Review</h2>
             <button type="button" id="closeCheckoutDialog" class="dialog-close" aria-label="Close checkout">
                 &times;
             </button>
@@ -273,10 +289,23 @@
             <h3>Review your order</h3>
             <div id="checkoutReview"></div>
             <div class="cart-summary">
-                <span>Items subtotal</span>
-                <strong id="checkoutTotal">₱0.00</strong>
+                <div class="cart-summary-row">
+                    <span>Items subtotal</span>
+                    <strong id="checkoutSubtotal">â‚±0.00</strong>
+                </div>
+                <div class="cart-summary-row">
+                    <span>Shipping (from)</span>
+                    <strong id="checkoutShipping">â‚±500.00+</strong>
+                </div>
+                <div class="cart-summary-row cart-summary-total">
+                    <span>Estimated total (minimum)</span>
+                    <strong id="checkoutTotal">â‚±0.00+</strong>
+                </div>
             </div>
-            <p class="checkout-notice">Shipping fee and availability are confirmed before your order is accepted.</p>
+            <p class="checkout-notice">
+                Shipping starts at â‚±500.00. The final fee depends on your delivery address and will be confirmed before
+                your order is accepted.
+            </p>
             <div class="checkout-actions">
                 <button type="button" class="button button-light" id="backToBag">BACK TO BAG</button>
                 <button type="button" class="button button-dark" data-checkout-next="customer">CONTINUE</button>
@@ -346,7 +375,8 @@
 
         <section class="checkout-step checkout-confirmation" data-checkout-step="confirmation" hidden>
             <h3>Thank you, <span id="confirmationName"></span>!</h3>
-            <p>Your email app should open with your order request.</p>
+            <p>Your email app should open with your order request addressed to sharmainecantal@gmail.com. Review it and
+                press Send to notify the shop.</p>
             <p id="confirmationSummary"></p>
             <p class="checkout-notice">
                 Review the message and press Send to contact us. Your order is not confirmed until we reply. Your bag
@@ -379,7 +409,7 @@
             <label for="adminName">Product Name</label>
             <input id="adminName" type="text" required>
 
-            <label for="adminPrice">Price (₱)</label>
+            <label for="adminPrice">Price (â‚±)</label>
             <input id="adminPrice" type="number" min="0" step="0.01" required>
 
             <label for="adminCategory">Category</label>
@@ -426,7 +456,7 @@
 
     <!-- Floating Admin Button -->
     <button id="adminToggle" class="admin-toggle">
-        ⚙ Manage Store
+        âš™ Manage Store
     </button>
 
     <script src="script.js"></script>
