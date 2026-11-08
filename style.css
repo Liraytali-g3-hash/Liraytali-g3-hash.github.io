@@ -101,7 +101,9 @@ textarea:focus-visible {
 
 .opening-reveal__sparkle {
     color: var(--rose);
-    font-size: 18px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
     opacity: 0;
     animation: opening-reveal-sparkle 0.5s ease 0.65s forwards;
 }
@@ -232,7 +234,9 @@ textarea:focus-visible {
 }
 
 #searchToggle {
-    font-size: 25px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 #cartToggle {
@@ -240,9 +244,15 @@ textarea:focus-visible {
     font-size: 12px;
 }
 
+.cart-label-mobile {
+    display: none;
+}
+
 .menu-toggle {
     display: none;
-    font-size: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 /* BUTTONS */
@@ -615,7 +625,11 @@ textarea:focus-visible {
     height: 100%;
     place-items: center;
     background: linear-gradient(145deg, #f4e3dd, #e8c9c5);
-    font-size: 80px;
+    padding: 12px;
+    font-size: clamp(14px, 3vw, 24px);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
 }
 
 .product-badge {
@@ -803,8 +817,12 @@ dialog::backdrop {
     border: none;
     background: transparent;
     color: var(--price);
-    font-size: 28px;
+    padding: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     line-height: 1;
+    white-space: nowrap;
 }
 
 .product-dialog {
@@ -960,6 +978,11 @@ dialog::backdrop {
     object-fit: cover;
 }
 
+.cart-thumb .placeholder-art {
+    padding: 4px;
+    font-size: 9px;
+}
+
 .cart-row h3 {
     margin: 0 0 5px;
     font-size: 12px;
@@ -983,10 +1006,13 @@ dialog::backdrop {
 }
 
 .quantity-controls button {
-    width: 25px;
+    min-width: 40px;
     height: 25px;
+    padding: 0 5px;
     border: 1px solid var(--line);
     background: var(--white);
+    font-size: 9px;
+    font-weight: 600;
 }
 
 .remove-item {
@@ -1353,11 +1379,19 @@ dialog::backdrop {
     }
 
     #searchToggle {
-        font-size: 23px;
+        font-size: 9px;
     }
 
     #cartToggle {
         font-size: 10px;
+    }
+
+    .cart-label {
+        display: none;
+    }
+
+    .cart-label-mobile {
+        display: inline;
     }
 
     .hero {
