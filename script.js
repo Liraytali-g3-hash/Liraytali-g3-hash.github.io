@@ -1206,6 +1206,7 @@ document.querySelectorAll("[data-checkout-back]").forEach(button => {
 });
 
 document.getElementById("backToBag").addEventListener("click", () => {
+    updateCheckoutUrl(false);
     document.getElementById("checkoutDialog").close();
     document.getElementById("cartDialog").showModal();
 });
@@ -1272,11 +1273,17 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
 });
 
 document.getElementById("closeCheckoutDialog").addEventListener("click", () => {
+    updateCheckoutUrl(false);
     document.getElementById("checkoutDialog").close();
 });
 
 document.getElementById("finishCheckout").addEventListener("click", () => {
+    updateCheckoutUrl(false);
     document.getElementById("checkoutDialog").close();
+});
+
+document.getElementById("checkoutDialog").addEventListener("cancel", () => {
+    updateCheckoutUrl(false);
 });
 
 document.getElementById("checkoutDialog").addEventListener("close", () => {
